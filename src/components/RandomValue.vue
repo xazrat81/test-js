@@ -6,13 +6,15 @@
             v-for="child in tree.children" 
             :key="child.value" 
             :tree="child" 
-            :value="child.value" 
-            :validate="validate"
+            :value="child.value"
+            :depth="child.depth"
         ></RandomValue>
     </div>
 </template>
 
 <script>
+import { bus } from '@/main'
+
 export default {
     name: 'RandomValue',
     props: {
@@ -25,10 +27,23 @@ export default {
             type: Object,
             required: false
         },
-        validate: {
-            type: Function,
-            default: () => {}
+        depth: {
+            type: Number
         }
+    },
+    methods: {
+        handleValidate() {
+            console.log(this.value)
+        },
+        validate() {
+            bus.$emit('onValidateComponent', this.depth)
+        }
+    },
+    created() {
+        bus.$on('onValidateComponent', depth => {
+            if(depth <= this.depth)
+            this.handleValidate()
+        })
     }
 }
 </script>

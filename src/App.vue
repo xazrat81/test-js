@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <RandomValue :value="tree.value" :tree="tree" :validate="validate"></RandomValue>
+    <RandomValue 
+      :value="tree.value" 
+      :tree="tree"
+      :depth="tree.depth"
+    ></RandomValue>
   </div>
 </template>
 
@@ -23,9 +27,6 @@ export default {
       const quantity = 6
       const response = await axios.get(`http://localhost:4251/api/tree?quantity=${quantity}`)
       this.tree = JSON.parse(response.data)
-    },
-    validate(value) {
-      console.log(value)
     }
   },
   mounted() {
